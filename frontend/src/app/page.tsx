@@ -31,13 +31,12 @@ export default function DashboardPage() {
       setTransactions(txs);
       setAuditSummary(audit);
 
-      // Pre-select defaults if not yet selected
       if (accs.length >= 2) {
         if (!selectedSourceId) setSelectedSourceId(accs[0].id);
         if (!selectedDestId) setSelectedDestId(accs[1].id);
       }
     } catch (err) {
-      console.error('Failed to load PayGuard dashboard data', err);
+      console.error('Failed to load ledger data', err);
     } finally {
       setIsLoading(false);
     }
@@ -45,7 +44,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     loadData();
-    const interval = setInterval(loadData, 10000); // 10s auto-refresh
+    const interval = setInterval(loadData, 10000);
     return () => clearInterval(interval);
   }, [loadData]);
 
@@ -58,18 +57,16 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col">
+    <div className="min-h-screen bg-ink-bg text-ink-primary flex flex-col">
       <Header
         auditSummary={auditSummary}
         onRefresh={loadData}
         isLoading={isLoading}
       />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Architecture Spec Banner */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-6 space-y-6">
         <ArchitectureDiagram />
 
-        {/* Account Cards */}
         <AccountList
           accounts={accounts}
           onSelectAccount={handleSelectAccount}
@@ -77,8 +74,7 @@ export default function DashboardPage() {
           selectedDestId={selectedDestId}
         />
 
-        {/* Transfer Terminal & Concurrency Simulator */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <TransferModal
             accounts={accounts}
             selectedSourceId={selectedSourceId}
@@ -94,7 +90,6 @@ export default function DashboardPage() {
           />
         </div>
 
-        {/* Double-Entry Ledger Audit Trail */}
         <LedgerAuditView
           transactions={transactions}
           auditSummary={auditSummary}
@@ -102,8 +97,8 @@ export default function DashboardPage() {
         />
       </main>
 
-      <footer className="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-xs text-slate-500 font-mono">
-        PayGuard Flagship Architectural Portfolio | Python FastAPI · PostgreSQL ACID Row-Locks · Redis · Next.js · AWS ECS Fargate
+      <footer className="border-t border-ink-border bg-ink-deep/60 py-5 text-center text-xs text-ink-muted">
+        PayGuard · Double-entry financial ledger · ACID row-level locking
       </footer>
     </div>
   );

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #090d14;
-  --foreground: #f8fafc;
+  --background: #0b0d14;
+  --foreground: #eef0f5;
 }
 
 body {
@@ -12,20 +12,31 @@ body {
   background: var(--background);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabular figures for financial accuracy */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle hairline border utility */
+.border-hairline {
+  border-color: rgba(238, 240, 245, 0.08);
 }
 
 /* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #07080d;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 3px;
+  background: #1a1e28;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #282e3d;
 }

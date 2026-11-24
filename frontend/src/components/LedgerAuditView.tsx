@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { BookOpen, Scale, ArrowUpRight, ArrowDownLeft, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { BookOpen, Scale } from 'lucide-react';
 import { LedgerTransaction, LedgerAuditSummary, Account } from '../lib/types';
 
 interface LedgerAuditViewProps {
@@ -18,44 +18,44 @@ export const LedgerAuditView: React.FC<LedgerAuditViewProps> = ({
   const accountMap = new Map(accounts.map((a) => [a.id, a]));
 
   return (
-    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm space-y-6">
+    <section className="bg-ink-card border border-ink-border rounded-panel p-5 space-y-4">
       {/* Top Banner & Audit Card */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold text-white flex items-center space-x-2">
-            <BookOpen className="w-5 h-5 text-emerald-400" />
-            <span>Immutable Double-Entry Ledger Audit Trail</span>
+          <h2 className="text-sm font-medium text-ink-primary flex items-center space-x-2">
+            <BookOpen className="w-4 h-4 text-ink-muted" strokeWidth={1.5} />
+            <span>Ledger audit trail</span>
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Every transaction enforces matching debits and credits with zero balance deviation
+          <p className="text-xs text-ink-muted mt-0.5">
+            Immutable double-entry journal records
           </p>
         </div>
 
         {auditSummary && (
-          <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl flex items-center space-x-4">
+          <div className="p-2.5 bg-ink-bg border border-ink-border rounded-control flex items-center space-x-3 text-xs">
             <div className="flex items-center space-x-2">
-              <Scale className="w-4 h-4 text-indigo-400" />
-              <div className="text-xs">
-                <span className="text-slate-400">Total Debits: </span>
-                <span className="font-mono font-bold text-slate-200">
+              <Scale className="w-3.5 h-3.5 text-ink-muted" strokeWidth={1.5} />
+              <div>
+                <span className="text-ink-muted">Debits: </span>
+                <span className="font-mono text-ink-primary tabular-nums font-medium">
                   ${(auditSummary.total_debits_cents / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                 </span>
               </div>
             </div>
 
-            <div className="text-slate-600">==</div>
+            <span className="text-ink-muted/50">=</span>
 
-            <div className="text-xs">
-              <span className="text-slate-400">Total Credits: </span>
-              <span className="font-mono font-bold text-slate-200">
+            <div>
+              <span className="text-ink-muted">Credits: </span>
+              <span className="font-mono text-ink-primary tabular-nums font-medium">
                 ${(auditSummary.total_credits_cents / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </span>
             </div>
 
-            <div className="border-l border-slate-800 pl-3">
-              <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <CheckCircle2 className="w-3 h-3" />
-                <span>Zero-Sum Verified</span>
+            <div className="border-l border-ink-border pl-3">
+              <span className="inline-flex items-center space-x-1.5 px-2 py-0.5 rounded-tag text-[10px] font-mono bg-ink-raised border border-ink-border text-ink-secondary">
+                <span className="w-1.5 h-1.5 rounded-full bg-ink-positive" />
+                <span>Zero-sum verified</span>
               </span>
             </div>
           </div>
@@ -66,19 +66,19 @@ export const LedgerAuditView: React.FC<LedgerAuditViewProps> = ({
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="border-b border-slate-800 text-slate-400 font-medium">
-              <th className="pb-3 pl-1">Reference &amp; Time</th>
-              <th className="pb-3">Description</th>
-              <th className="pb-3">Debited Account (Asset Decr)</th>
-              <th className="pb-3">Credited Account (Asset Incr)</th>
-              <th className="pb-3 text-right pr-1">Amount</th>
+            <tr className="border-b border-ink-border text-ink-muted font-normal">
+              <th className="pb-2.5 font-normal">Reference</th>
+              <th className="pb-2.5 font-normal">Description</th>
+              <th className="pb-2.5 font-normal">Debited (Out)</th>
+              <th className="pb-2.5 font-normal">Credited (In)</th>
+              <th className="pb-2.5 text-right font-normal">Amount</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60 font-mono">
+          <tbody className="divide-y divide-ink-border font-mono">
             {transactions.length === 0 ? (
               <tr>
-                <td colSpan={5} className="py-8 text-center text-slate-500 font-sans">
-                  No ledger entries recorded yet. Perform a transfer or run the concurrency stress test!
+                <td colSpan={5} className="py-6 text-center text-ink-muted font-sans">
+                  No transactions recorded yet
                 </td>
               </tr>
             ) : (
@@ -89,48 +89,42 @@ export const LedgerAuditView: React.FC<LedgerAuditViewProps> = ({
                 const creditAcc = creditEntry ? accountMap.get(creditEntry.account_id) : null;
 
                 return (
-                  <tr key={tx.id} className="hover:bg-slate-950/40 transition-colors">
-                    <td className="py-3 pl-1">
-                      <div className="font-semibold text-slate-200">{tx.reference_id}</div>
-                      <div className="text-[10px] text-slate-500 font-sans">
+                  <tr key={tx.id} className="hover:bg-ink-raised/40 transition-colors">
+                    <td className="py-2.5">
+                      <div className="text-ink-primary">{tx.reference_id}</div>
+                      <div className="text-[10px] text-ink-muted font-sans">
                         {tx.posted_at ? new Date(tx.posted_at).toLocaleTimeString() : ''}
                       </div>
                     </td>
-                    <td className="py-3 text-slate-300 font-sans text-xs">
+                    <td className="py-2.5 text-ink-secondary font-sans">
                       {tx.description}
                       {tx.idempotency_key && (
-                        <div className="text-[10px] text-slate-500 font-mono truncate max-w-[200px]">
-                          Key: {tx.idempotency_key}
+                        <div className="text-[10px] text-ink-muted font-mono truncate max-w-[180px]">
+                          key: {tx.idempotency_key}
                         </div>
                       )}
                     </td>
-                    <td className="py-3">
-                      <div className="flex items-center space-x-1 text-rose-400">
-                        <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
-                        <span className="truncate max-w-[150px]">
-                          {debitAcc ? debitAcc.holder_name : debitEntry?.account_id}
-                        </span>
-                      </div>
+                    <td className="py-2.5 text-ink-secondary">
+                      <span className="truncate max-w-[140px] block font-sans">
+                        {debitAcc ? debitAcc.holder_name : debitEntry?.account_id}
+                      </span>
                       {debitEntry && (
-                        <div className="text-[10px] text-slate-500">
-                          Bal after: ${debitEntry.balance_after_formatted}
-                        </div>
-                      )}
-                    </td>
-                    <td className="py-3">
-                      <div className="flex items-center space-x-1 text-emerald-400">
-                        <ArrowDownLeft className="w-3.5 h-3.5 shrink-0" />
-                        <span className="truncate max-w-[150px]">
-                          {creditAcc ? creditAcc.holder_name : creditEntry?.account_id}
+                        <span className="text-[10px] text-ink-muted tabular-nums">
+                          Bal: ${debitEntry.balance_after_formatted}
                         </span>
-                      </div>
-                      {creditEntry && (
-                        <div className="text-[10px] text-slate-500">
-                          Bal after: ${creditEntry.balance_after_formatted}
-                        </div>
                       )}
                     </td>
-                    <td className="py-3 text-right pr-1 font-bold text-slate-100">
+                    <td className="py-2.5 text-ink-secondary">
+                      <span className="truncate max-w-[140px] block font-sans">
+                        {creditAcc ? creditAcc.holder_name : creditEntry?.account_id}
+                      </span>
+                      {creditEntry && (
+                        <span className="text-[10px] text-ink-muted tabular-nums">
+                          Bal: ${creditEntry.balance_after_formatted}
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-2.5 text-right font-medium text-ink-primary tabular-nums">
                       ${debitEntry ? debitEntry.amount_formatted : '0.00'}
                     </td>
                   </tr>
@@ -140,6 +134,6 @@ export const LedgerAuditView: React.FC<LedgerAuditViewProps> = ({
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
   );
 };

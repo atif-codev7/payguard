@@ -2,8 +2,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'PayGuard | High-Concurrency Financial Ledger System',
-  description: 'Enterprise double-entry bookkeeping ledger with ACID row-locking, Redis rate limiting, and zero race-condition guarantees.',
+  title: 'PayGuard | Financial Ledger System',
+  description: 'Double-entry bookkeeping ledger with ACID row-locking, Redis rate limiting, and race-condition elimination.',
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen bg-slate-950 text-slate-100 antialiased selection:bg-blue-600 selection:text-white">
+      <body className="min-h-screen bg-ink-bg text-ink-primary antialiased">
         {children}
       </body>
     </html>
